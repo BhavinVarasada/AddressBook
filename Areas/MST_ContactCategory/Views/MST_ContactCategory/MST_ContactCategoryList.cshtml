@@ -1,0 +1,84 @@
+﻿@{
+    ViewData["Title"] = "LOC_CountryList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using System.Data
+@model DataTable
+
+<div class="col-md-12">
+    <div class="row">
+        <div class="col-md-8">
+            <h3 style="margin-top:auto;">ContactCategory List</h3>
+        </div>
+
+        <div class="col-md-2">
+            <div id="sample_1_filter" class="dataTables_filter">
+                <input type="text" class="form-control input-sm input-small input-inline" placeholder="Search Here" id="sample_1">
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <form asp-area="MST_ContactCategory" asp-controller="MST_ContactCategory" asp-action="Add">
+                <button class="btn btn-success">Add ContactCategory</button>
+            </form>
+        </div>
+    </div>
+</div>
+<br />
+
+<table class="table" id="sample_1">
+    <thead>
+        <tr>          
+            <th>ContactCategory Name</th>
+            <th>CreationDate</th>
+            <th>ModificationDate</th>      
+            <th>Actions</th>
+        </tr>
+    </thead>
+
+    <tbody id="sample_2">
+        @foreach (DataRow dr in Model.Rows)
+        {
+            <tr>             
+                <td>@dr["ContactCategoryName"]</td>
+                <td>@dr["CreationDate"]</td>
+                <td>@dr["ModificationDate"]</td>             
+               <td>
+                    <form method="post">
+                        <input type="hidden" name="ContactCategoryID" value="@Convert.ToInt32(dr["ContactCategoryID"])">
+                        <button type="submit" class="btn btn-danger" asp-controller="MST_ContactCategory" asp-area="MST_ContactCategory" asp-action="delete" onclick="return fun1()"><i class="fa fa-close"></i></button>
+                        <button class="btn btn-info" asp-route-ContactCategoryID="@Convert.ToInt32(dr["ContactCategoryID"])" asp-area="MST_ContactCategory" asp-controller="MST_ContactCategory" asp-action="Add"><i class="fa fa-edit"></i></button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts
+    {
+    <script>
+        $(document).ready(function () {
+            $("#sample_1").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#sample_2 tr").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+
+        function fun1()
+        {
+            if(confirm("Are you sure you want to Delete"))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+    </script>
+}
+

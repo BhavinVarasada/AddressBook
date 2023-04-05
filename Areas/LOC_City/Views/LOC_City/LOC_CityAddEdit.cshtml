@@ -1,0 +1,92 @@
+﻿@{
+    ViewData["Title"] = "LOC_CityAddEdit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model AddressBook.Areas.LOC_City.Models.LOC_CityModel
+
+<div>
+    <div class="col-md-12">
+        <h3>@TempData["CityInsertMsg"]</h3>
+        <div class="portlet-title">
+            <div class="row">
+                <div class="caption font-green-haze col-md-10">
+                    <i class="icon-plus font-green"></i>
+                    <span class="caption-subject bold uppercase">City Add/Edit</span>
+                </div>
+            </div>
+        </div>
+        <br />
+        <form method="post" asp-area="LOC_City" asp-controller="LOC_City" asp-action="Save" enctype="multipart/form-data">
+            @Html.HiddenFor(x=>x.CityID)  
+            
+            <div class="form-group">
+                <label><span class="text-danger">*</span>Country Name</label>
+                <select class="form-control" asp-for="CountryID" asp-items="@(new SelectList(ViewBag.CountryList,"CountryID","CountryName"))" onchange="fnOnStateChange();">
+                    <option value="">Select Country</option>
+                </select>
+            </div>
+            <span asp-validation-for="CountryID" class="text-danger"></span>
+            <div class="form-group">
+                <label><span class="text-danger">*</span>State Name</label>
+                <select class="form-control" asp-for="StateID" asp-items="@(new SelectList(ViewBag.StateList,"StateID","StateName"))">
+                    <option value="">Select State</option>
+                </select>
+            </div>
+            <span asp-validation-for="StateID" class="text-danger"></span>
+            <div class="form-group">
+                <label><span class="text-danger">*</span>City Name</label>
+                <input type="text" class="form-control" asp-for="CityName" placeholder="Enter City Name" />
+            </div>
+            <span asp-validation-for="CityName" class="text-danger"></span>
+            <div class="form-group">
+                <label>City Code</label>
+                <input type="text" class="form-control" asp-for="CityCode" placeholder="Enter City Code" />
+            </div>
+          
+            <hr />
+            <input type="submit" class="btn btn-success" />
+            <a asp-area="LOC_City" asp-controller="LOC_City" asp-action="Back">
+                <button type="button" class="btn btn-dark">Cancel</button>
+            </a>
+        </form>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        function fnOnStateChange() {
+
+            var CountryID = $("#CountryID").val();
+
+            if (CountryID !== "") {
+                $("#StateID").empty();
+                $("#StateID").append($("<option></option>").val("").html("Select State"));
+                $.ajax(
+                    {
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        url: "@Url.Action("DropDownByCountry","LOC_City")" + "?CountryID=" + CountryID,
+                        data: {},
+                        datatType: "json",
+                        success: function (Result) {
+                            $.each(Result,
+                                function (key, value) {
+                                    $("#StateID").append($("<option></option>").val(value.stateID).html(value.stateName));
+                                }
+                            );
+                        },
+                        error: function (r) {
+                            alert("Error While Loading Dropdown!");
+                        }
+                    }
+                );
+            }
+            else {
+                $("StateID").empty();
+                $("StateID").append($("<option></option>").val("").html("Select State"));
+            }
+        }
+    </script>
+}
+
+

@@ -1,0 +1,33 @@
+﻿@{
+    ViewData["Title"] = "MST_ContactCategoryAddEdit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model AddressBook.Areas.MST_ContactCategory.Models.MST_ContactCategoryModel
+<div>
+    <div class="col-md-12">
+        <h3>@TempData["ContactCategoryInsertMsg"]</h3>
+        <div class="portlet-title">
+            <div class="row">
+                <div class="caption font-green-haze col-md-10">
+                    <i class="icon-plus font-green"></i>
+                    <span class="caption-subject bold uppercase">Contact Category Add/Edit</span>
+                </div>
+            </div>
+        </div>
+        <br />
+        <form method="post" asp-area="MST_ContactCategory" asp-controller="MST_ContactCategory" asp-action="Save">
+            @Html.HiddenFor(x=>x.ContactCategoryID)
+            <div class="form-group">
+                <label><span class="text-danger">*</span>ContactCategory Name</label>
+                <input type="text" class="form-control" asp-for="ContactCategoryName" placeholder="Enter ContactCategory Name" />
+            </div>
+            <span asp-validation-for="ContactCategoryName" class="text-danger"></span>
+            <hr />
+            <input type="submit" class="btn btn-success" />
+            <a asp-area="MST_ContactCategory" asp-controller="MST_ContactCategory" asp-action="Back">
+                <button type="button" class="btn btn-dark">Cancel</button>
+            </a>
+        </form>
+    </div>
+</div>
+

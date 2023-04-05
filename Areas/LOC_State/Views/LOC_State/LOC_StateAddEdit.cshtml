@@ -1,0 +1,44 @@
+﻿@{
+    ViewData["Title"] = "LOC_StateAddEdit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model AddressBook.Areas.LOC_State.Models.LOC_StateModel
+<div>
+    <div class="col-md-12">
+        <h3>@TempData["StateInsertMsg"]</h3>
+        <div class="portlet-title">
+            <div class="row">
+                <div class="caption font-green-haze col-md-10">
+                    <i class="icon-plus font-green"></i>
+                    <span class="caption-subject bold uppercase">State Add/Edit</span>
+                </div>
+            </div>
+        </div>
+        <br />
+        <form method="post" asp-area="LOC_State" asp-controller="LOC_State" asp-action="Save" enctype="multipart/form-data">
+            @Html.HiddenFor(x=>x.StateID)          
+            <div class="form-group">
+                <label><span class="text-danger">*</span>Country Name</label>
+                <select class="form-control" asp-for="CountryID" asp-items="@(new SelectList(ViewBag.CountryList,"CountryID","CountryName"))">
+                    <option value="">Select Country</option>
+                </select>
+            </div>
+            <span asp-validation-for="CountryID" class="text-danger"></span>
+            <div class="form-group">
+                <label><span class="text-danger">*</span>State Name</label>
+                <input type="text" class="form-control" asp-for="StateName" placeholder="Enter State Name" />
+            </div>
+             <span asp-validation-for="StateName" class="text-danger"></span>
+            <div class="form-group">
+                <label>State Code</label>
+                <input type="text" class="form-control" asp-for="StateCode" placeholder="Enter State Code" />
+            </div>
+            <hr />
+            <input type="submit" class="btn btn-success" />
+            <a asp-area="LOC_State" asp-controller="LOC_State" asp-action="Back">
+                <button type="button" class="btn btn-dark">Cancel</button>
+            </a>
+        </form>
+    </div>
+</div>
+

@@ -1,0 +1,93 @@
+﻿@{
+    ViewData["Title"] = "LOC_CountryList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using System.Data
+@model DataTable
+
+<div class="col-md-12">
+    <div class="row">
+        <div class="col-md-4">
+            <h3 style="margin-top:auto;">Country List</h3>
+        </div>
+        <div class="col-md-6">
+            <form method="post" class="form-inline">
+
+                <select class="form-control" name="CountryName" id="CountryDropdownList">
+                    @* @*Here First argument Country ID Should Be Consider as Values and second argument CountryName as html that is diaplay in list@**@
+                    <option value="">Select Country</option>
+
+
+                    @foreach (var item in ViewBag.CountryList)
+                    {
+                        <option value="@item.CountryName">@item.CountryName</option>
+                    }
+                </select>
+
+                <input class="form-control mr-sm-2" name="CountryCode" type="text" placeholder="Country Code" />
+                <button type="submit" asp-area="LOC_Country" asp-controller="LOC_Country" asp-action="Index" class="btn btn-success">Apply Filters</button>
+
+            </form>
+
+        </div>
+
+        <div class="col-md-2">
+            <form asp-area="LOC_Country" asp-controller="LOC_Country" asp-action="Add">
+                <button class="btn btn-success">Add Country</button>
+            </form>
+        </div>
+    </div>
+</div>
+<br />
+<br />
+<br />
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Country Name</th>
+            <th>Country Code</th>
+            <th>CreationDate</th>
+            <th>ModificationDate</th>
+            <th>&nbsp;&nbsp;Actions</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (DataRow dr in Model.Rows)
+        {
+            <tr>           
+                <td>@dr["CountryName"]</td>
+                <td>@dr["CountryCode"]</td>
+                <td>@dr["CreationDate"]</td>
+                <td>@dr["ModificationDate"]</td>
+                <td>
+                    <form method="post">
+                        <input type="hidden" name="CountryID" value="@Convert.ToInt32(dr["CountryID"])">
+                        <button type="submit" class="btn btn-danger" asp-area="LOC_Country" asp-controller="LOC_Country" asp-action="delete" onclick="return fun1()"><i class="fa fa-close"></i></button>
+                        <button class="btn btn-info" asp-route-CountryID="@Convert.ToInt32(dr["CountryID"])" asp-area="LOC_Country" asp-controller="LOC_Country" asp-action="Add"><i class="fa fa-edit"></i></button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts
+{
+    <script>
+        function fun1()
+        {
+            if(confirm("Are you sure you want to Delete"))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+    </script>
+}
+

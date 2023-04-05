@@ -1,0 +1,100 @@
+﻿@{
+    ViewData["Title"] = "LOC_StateList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using System.Data
+@model DataTable
+
+<div class="col-md-12">
+    <div class="row">
+        <div class="col-md-2">
+            <h3 style="margin-top:auto;">State List</h3>
+        </div>
+        
+        <div class="col-md-8">
+            <form method="post" class="form-inline">
+                <select class="form-control mr-sm-2" id="countryDropdown" name="CountryName">
+                    <option value="">Select Country</option>
+                    @foreach (var item in ViewBag.CountryList)
+                    {
+                        <option value="@item.CountryName">@item.CountryName</option>
+                    }
+                </select>
+
+                <select class="form-control mr-sm-2" id="stateDropdown" name="StateName">
+                    <option value="">Select State</option>
+                    @foreach (var item in ViewBag.StateList)
+                    {
+                        <option value="@item.StateName">@item.StateName</option>
+                    }
+                </select>
+
+                <input class="form-control mr-sm-2" name="StateCode" type="text" placeholder="State Code" />
+                <button class="btn btn-success" type="submit" asp-area="LOC_State" asp-controller="LOC_State" asp-action="Index">Apply Filters</button>
+            </form>
+        </div>
+
+        <div class="col-md-2">
+            <form asp-area="LOC_State" asp-controller="LOC_State" asp-action="Add">
+                <button class="btn btn-success">Add State</button>
+            </form>
+        </div>
+    </div>
+</div>
+<br />
+<br />
+<br />
+<table class="table">
+    <thead>
+        <tr>
+            <th>Country Name</th>
+            <th>State Name</th>
+            <th>State Code</th>           
+            <th>CreationDate</th>
+            <th>ModificationDate</th>
+            <th>Actions</th>
+          
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (DataRow dr in Model.Rows)
+        {
+            <tr>          
+                <td>@dr["CountryName"]</td>
+                <td>@dr["StateName"]</td>
+                <td>@dr["StateCode"]</td>
+                <td>@dr["CreationDate"]</td>
+                <td>@dr["ModificationDate"]</td>         
+                <td>
+                    <form method="post">
+                        <input type="hidden" name="StateID" value="@Convert.ToInt32(dr["StateID"])">
+                        <button type="submit" class="btn btn-danger" asp-area="LOC_State" asp-controller="LOC_State" asp-action="delete" onclick="return fun1()"><i class="fa fa-close"></i></button>
+                        <button class="btn btn-info" asp-route-StateID="@Convert.ToInt32(dr["StateID"])" asp-area="LOC_State" asp-controller="LOC_State" asp-action="Add"><i class="fa fa-edit"></i></button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts
+    {
+        <script>
+
+        function fun1()
+        {
+            if(confirm("Are you sure you want to Delete"))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        </script>
+}
+

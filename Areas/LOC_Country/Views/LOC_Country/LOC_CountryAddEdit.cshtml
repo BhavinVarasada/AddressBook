@@ -1,0 +1,41 @@
+﻿@{
+    ViewData["Title"] = "LOC_CountryAddEdit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model AddressBook.Areas.LOC_Country.Models.LOC_CountryModel
+<div>
+    <div class="col-md-12">
+        <h3>@TempData["CountryInsertMsg"]</h3>
+            <div class="portlet-title">
+                <div class="row">
+                    <div class="caption font-green-haze col-md-10">
+                        <i class="icon-plus font-green"></i>
+                        <span class="caption-subject bold uppercase">Country Add/Edit</span>
+                    </div>
+                </div>
+            </div>
+        <br />
+        <form method="post" asp-area="LOC_Country" asp-controller="LOC_Country" asp-action="Save" enctype="multipart/form-data">
+            @Html.HiddenFor(x=>x.CountryID)
+
+            <div class="form-group">
+                <label><span class="text-danger">*</span>Country Name</label>
+                <input type="text" class="form-control" asp-for="CountryName" placeholder="Enter Country Name" />
+            </div>
+            <span asp-validation-for="CountryName" class="text-danger"></span>
+            <div class="form-group">
+                <label><span class="text-danger">*</span>Country Code</label>
+                <input type="text" class="form-control" asp-for="CountryCode" placeholder="Enter Country Code" />
+            </div>
+            <span asp-validation-for="CountryCode" class="text-danger"></span>
+            <hr />
+            
+            <input type="submit" class="btn btn-success"/>
+            <a asp-area="LOC_Country" asp-controller="LOC_Country" asp-action="Back">
+                <button type="button" class="btn btn-dark" >Cancel</button>
+            </a>
+        </form>
+    </div>
+</div>
+
+
